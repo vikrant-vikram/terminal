@@ -1,0 +1,38 @@
+{
+  "name": "terminal",
+  "version": "1.0.0",
+  "description": "a terminal based game",
+  "main": "server.js",
+  "scripts": {
+    "test": "npm run devStart",
+    "devStart": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bikkimaurya/terminal.git"
+  },
+  "keywords": [
+    "terminal",
+    "Game",
+    "Game",
+    "Terminal"
+  ],
+  "author": "bikrant bikram pratap",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bikkimaurya/terminal/issues"
+  },
+  "homepage": "https://github.com/bikkimaurya/terminal#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "fs": "^0.0.1-security",
+    "mongoose": "^7.0.1",
+    "nodemon": "^2.0.21"
+  }
+}

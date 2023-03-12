@@ -1,0 +1,71 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body  >
+
+  <audio id="notifypop" controls hidden muted > 
+    <source src="path/sound.ogg" type="audio/ogg">
+    <source src="media/creepy-echo-scary-and-spooky-sounds-9685.mp3" type="audio/mpeg">
+  </audio>
+
+
+  <audio id="keyboardsound" controls hidden > 
+    <source src="path/sound.ogg" type="audio/ogg">
+    <source src="media/key-4.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="overlay"></div>
+  <div class="scanline"></div>
+  
+  <div class="terminal wrapper">
+    <p class="page-intro red"></p>
+    <div class="image-hero">
+      <!-- <img src="https://cdn.pixabay.com/photo/2017/02/24/22/00/skull-2096533_1280.png" alt=""> -->
+    </div>
+    <p id="login-session"> Tue Jan 10 17:48:46 on ttys000</p>
+    <table>
+      <tr>
+        <td>Command</td>
+        
+        <td></td>  
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>/Print</td> 
+        <td>: To print User Specific inforation</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>/help </td> 
+        <td>: To Get infroamtion regarding commands</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>/getintro </td> 
+        <td>: To Get the introduction </td>
+      </tr>
+    </table>
+    <div class="terminal-output"></div>
+    <div class="terminal-input">
+      <span class="prompt">user-random_number@PC1 ~ %</span>
+      <input type="text" id="terminal-input">
+    </div>
+  </div>
+
+
+
+
+<script src="script/script.js"></script>
+
+  
+</body>
+</html>
