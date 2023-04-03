@@ -1,0 +1,23 @@
+<form action="/setassignment" method="post"><br>
+    assignmentid:{type: String, required: true},
+<input type="text" name="assignmentid" id=""><br>
+username:{type: Schema.Types.ObjectId, ref: 'user' ,required: true},
+<input type="text" name="username" id=""><br>
+taskid:{type: Schema.Types.ObjectId, ref: 'taskdetails' ,required: true},
+<input type="text" name="" id="taskid"><br>
+taskstatus:{type: Schema.Types.ObjectId, ref: 'taskstatus' ,required: true},
+<input type="text" name="" id="taskstatus"><br>
+assignmentdate:{type: String, required: true},
+<input type="text" name="assignmentdate" id=""><br>
+finishdate:{type: String, required: false},
+<input type="text" name="finishdate" id=""><br>
+temp1:{type: String, required: false},
+<input type="text" name="temp1" id=""><br>
+temp2:{type: String, required: false},
+<input type="text" name="temp2" id=""><br>
+temp3:{type: String, required: false}
+<input type="text" name="temp3" id=""><br>
+
+<br>
+<button type="submit">Submit</button>
+</form>

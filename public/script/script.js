@@ -1,10 +1,15 @@
 
+var isLogInActive=false
+var username = ""
+var password = ""
 
+//telles whether user is loggedin or not
+var isLoggedIn=false
 
 const input = document.getElementById("terminal-input");
 const output = document.querySelector(".terminal-output");
 const intro = document.querySelector(".page-intro");
-const user = "user-random_number@PC1 ~ %"
+const user = "Login"+ "@PC1 ~ %"
 
 
 var popupsound = document.getElementById("notifypop");
@@ -37,9 +42,6 @@ class Stack {
 history = new Stack(10);
 topOfStack = -1;
 
-isLogInActive=false
-username = ""
-password = ""
 
 
 
@@ -58,36 +60,105 @@ input.addEventListener("keydown", async function(event) {
     output.innerHTML += "<br>" +  user + command;
     input.value = "";
 
+    //Checking whether user is trying to login
+    // if user had typed ./login then isloginActive will become true 
     if(!isLogInActive){
 
-      if(command == "./print"){
+      //./profile will print users current information
+      if(command == "./profile"){
         output.innerHTML += "<br>" +  user ;
-        typeResponse("HI " + user+ " Level : 0, Success Ratio : 0.0 , Task Completed : 0", output, 100)
+        response = await makeProfileRequest()
+        // print responce which have recieved form servver
+        typeResponse(response , output, 100)
       }
+
+
+
+      // ====================================
+      else if(command == "./assignment"){
+        output.innerHTML += "<br>" +  user ;
+        response =  makeGetAssignmentRequest()
+        // print responce which have recieved form servver
+        typeResponse(response , output, 100)
+      }
+
+      else if(command.includes("./resource")){
+        output.innerHTML += "<br>" +  user ;
+        response = await makeGetResourceRequest(command.split(" ")[1])
+        // print responce which have recieved form servver
+        typeResponse(response , output, 100)
+      }
+
+      else if(command.includes("./taskdetails")){
+        
+        output.innerHTML += "<br>" +  user ;
+        response = await makeGetTaskDetailsRequest(command.split(" ")[1])
+        // print responce which have recieved form servver
+        typeResponse(response , output, 100)
+      }
+      
+      
+      
+
+
+      // ========================================
   
-  
+      //Thic command will print Intro about the GAME
       else if(command == "./getintro"){
         output.innerHTML += "<br>" +  user ;
         getIntro();
       }
-  
-  
+
+
       else if(command == "--help"){
         output.innerHTML += "<br>" +  user ;
         typeResponse("“ The world is nothing but a game of balance. There’s always going to be bad in order to balance out the good.” — Madara Uchiha" , output, 100)
       }
-  
-  
-      else if(command == "./login"){
+
+
+
+      //IF user want to login
+      else if(command == "./login" ){
+        username=""
+        password=""
         isLogInActive= true
+        //Make logout request if user is already logged in
+        // response = await makeLogoutRequest()
         output.innerHTML += "<br>" +  user ;
         typeResponse("Enter your username" , output, 100)
       }
 
+
+
+
+
+      // ----------------------------------LOGOUT----------------------------------------
+      // If Command is ./logout make logout request for logout 
+      // Check whether command is ./logout 
       else if(command == "./logout"){
+
         isLogInActive= false
         username=""
         password=""
+        // Colling Fxn which will make a sertup for Logout 
+        response = await makeLogoutRequest()
+        // print responce which have recieved form servver
+        typeResponse(response , output, 100)
+      }
+
+      else if(command == "./contact"){
+        output.innerHTML += "<br>" +  user ;
+        response = await makeContactRequest()
+        // print responce which have recieved form servver
+        typeResponse(response , output, 100)
+      }
+
+
+      else{
+        response = await makeChatRequest(command)
+        // print responce which have recieved form servver
+        typeResponse(response , output, 100)
+
       }
 
     }
@@ -116,9 +187,9 @@ input.addEventListener("keydown", async function(event) {
         }
         else{
           isLogInActive = false
-          response = await makeLoginRequest(username,password)
-          console.log(response.body)
-          // typeResponse(response.data , output, 100)
+          response = await  makeLoginRequest(username,password)
+          // console.log(response)
+          typeResponse(response , output, 100)
 
         }
 
@@ -165,6 +236,9 @@ function getIntro(){
 }
 
 
+
+
+// this function makes Typing Effect 
 async function typeResponse(response, writeAt, delay) {
 
   // response : WHat has to Printed on the screen with typing effect
@@ -185,14 +259,11 @@ async function typeResponse(response, writeAt, delay) {
 
 
 
-async function makeLoginRequest(username, password){
+async function makeLogoutRequest(){
 
-  data={
-    username:username,
-    password:password
-  }
-  url="/temp"
-  response = await makePostRequest(url,data)
+  var data={}
+  url="/logout"
+  var response = await makePostRequest(url,data)
   return response
  
 }
@@ -200,16 +271,229 @@ async function makeLoginRequest(username, password){
 
 
 
-async function makePostRequest(url, data){
+async function makeLoginRequest(username, password){
 
-  response = await fetch(url, {
-    method: 'POST',
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  })
+  var data={
+    username:username,
+    password:password
+  }
+  url="/login"
+  var response = await makePostRequest(url,data)
+  return response
+ 
+}
+
+
+async function makeContactRequest(){
+  var data={}
+  url="/contact"
+  var response = await makePostRequest(url,data)
   return response
 
 }
+
+
+
+async function makeChatRequest(data){
+  var data={data:data}
+  url="/chat"
+  var response = await makePostRequest(url,data)
+  return response
+
+}
+
+
+
+
+// =================
+
+
+async function makeSetAssignmentquest(data){
+  url="/setassignment"
+  var response = await makePostRequest(url,data)
+  return response
+
+}
+async function makeGetAssignmentRequest(){
+  data =  ''
+  url="/getassignment"
+  var response = await makePostRequest(url,data)
+  return response
+
+}
+
+
+async function makeSetResourceRequest(data){
+  url="/setresource"
+  var response = await makePostRequest(url,data)
+  return response
+}
+
+
+async function makeGetResourceRequest(data){
+
+  url="/getresouce"
+  var response = await makePostRequest(url,data)
+  return response
+}
+
+
+async function makeSetResourceTypeRequest(data){
+
+  url="/setresourcetype"
+  var response = await makePostRequest(url,data)
+  return response
+
+}
+async function makeGetResourceRequest(data){
+
+  url="/getresourcetype"
+  var response = await makePostRequest(url,data)
+  return response
+
+}
+
+
+
+async function makeSetResourceTypeRequest(data){
+
+  url="/setresourcetype"
+  var response = await makePostRequest(url,data)
+  return response
+
+}
+async function makeGetResourceTypeRequest(data){
+
+  url="/getresourcetype"
+  var response = await makePostRequest(url,data)
+  return response
+
+}
+
+
+async function makeSetTaskDetailsRequest(data){
+  url="/settaskdetails"
+  var response = await makePostRequest(url,data)
+  return response
+
+}
+async function makeGetTaskDetailsRequest(data){
+  data ={taskid:data}
+  url="/gettaskdetails"
+  var response = await makePostRequest(url,data)
+  return response
+
+}
+
+
+
+
+async function makeSetTaskStatusRequest(data){
+  url="/settaskstatus"
+  var response = await makePostRequest(url,data)
+  return response
+
+}
+async function makeGetTaskStatusRequest(data){
+  url="/gettaskstatus"
+  var response = await makePostRequest(url,data)
+  return response
+}
+
+
+
+async function makeSetTaskTypeRequest(data){
+  url="/setTaskType"
+  var response = await makePostRequest(url,data)
+  return response
+
+}
+async function makeGetTaskTypeRequest(data){
+  url="/getTaskType"
+  var response = await makePostRequest(url,data)
+  return response
+}
+
+async function makeGetUserStatusRequest(data){
+  url="/getuserstatus"
+  var response = await makePostRequest(url,data)
+  return response
+}
+
+async function makeSetUserStatusRequest(data){
+  url="/setuserstatus"
+  var response = await makePostRequest(url,data)
+  return response
+}
+
+async function makeRegiterRequest(data){
+  url="/reguster"
+  var response = await makePostRequest(url,data)
+  return response
+}
+
+
+
+
+
+
+
+
+
+
+
+async function makeProfileRequest(){
+  var data={}
+  url="/profile"
+  var response = await makePostRequest(url,data)
+  return response
+
+}
+
+
+
+
+async function makePostRequest(url, data){
+
+  // response = await fetch(url, {
+  //   method: 'POST',
+  //   headers: {
+  //       'Accept': 'application/json',
+  //       'Content-Type': 'application/json'
+  //   },
+  //   body: JSON.stringify(data)
+  // })
+  // return response
+
+
+
+//   response_data=""
+//  await $.post(url,data).then(data=>{
+//       response_data = data
+//       console.log(data)
+//     }).catch(err=>{
+//       response_data="errrrroorrrr";
+//     });   
+//   return response_data
+responce = "test"
+await $.ajax({
+  url: url,
+  type: "POST",
+  data: data,
+  success:  function(data) {
+    // Display user details if login successful
+    console.log(data);
+    responce = JSON.stringify(data) 
+  },
+  error: function(xhr, status, error) {
+    // Display error message if login failed
+    console.log(error)
+    // console.error(error);
+    responce =  error
+  }
+});
+
+return responce
+}
+
+
